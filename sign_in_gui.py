@@ -2,6 +2,8 @@ import tkinter as tk                # python 3
 from tkinter import font as tkfont  # python 3
 import json
 import os
+import user_data
+from user_screen_giu import *
 
 class StartPage(tk.Frame):
 
@@ -52,6 +54,7 @@ class Login(tk.Frame):
     # Implementing event on login button 
     
     def login_verify(self):
+        global user_data
         username1 = username_verify.get()
         password1 = password_verify.get()
         username_login_entry.delete(0, tk.END)
@@ -61,10 +64,12 @@ class Login(tk.Frame):
             user_data_json = json.load(read_file)
         users_list = user_data_json["users"]
         for user in users_list:
-            if username1 in user.keys():
-                if password1 in user.values():
+            name = list(user.keys())[0]
+            if username1 == name:
+                if password1 == user[name]["password"]:
                     self.controller.show_frame("UserScreen")
-                    return
+                    user_data.user_dict = dict(user)
+                    return 
                 else:
                     self.password_not_recognised()
                     return
@@ -145,13 +150,16 @@ class Register(tk.Frame):
         tk.Button(self,text="Register", width=10, height=1, bg="blue", command = self.register_user).pack()
 
     def register_user(self):
-    
         username_info = username.get()
         password_info = password.get()
-        user_dict = {username_info:password_info}
-        dict_ = {"users":[user_dict]}
+        user_dict = {username_info: 
+                        {"password":password_info,
+                        "points": 10
+                        }
+                    }
         if not os.path.exists('user_data.json'):
             file_ = open('user_data.json', 'w')
+            dict_ = {"users":[user_dict]}
             file_.write(json.dumps(dict_))
             file_.close()
         else:

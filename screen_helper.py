@@ -1,7 +1,6 @@
 import tkinter as tk                # python 3
 from tkinter import font as tkfont  # python 3
 from sign_in_gui import *
-from main_giu import *
 
 class screen_helper(tk.Tk):
 
