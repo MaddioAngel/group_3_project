@@ -68,7 +68,9 @@ class Login(tk.Frame):
             if username1 == name:
                 if password1 == user[name]["password"]:
                     self.controller.show_frame("UserScreen")
+                    UserScreen_object = self.controller.get_screen_object("UserScreen")
                     user_data.user_dict = dict(user)
+                    UserScreen_object.get_user_info()
                     return 
                 else:
                     self.password_not_recognised()
