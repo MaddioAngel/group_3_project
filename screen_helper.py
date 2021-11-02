@@ -9,6 +9,7 @@ class screen_helper(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+        self.geometry("400x650")
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
