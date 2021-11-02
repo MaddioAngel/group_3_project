@@ -8,8 +8,6 @@ class Hangman:
         self.tries = 6
         self.letters_guessed = list()
         self.guessed_words = list()
-
-        self.start_game()
     
     def updated_completed_part(self, letter): 
         completed_part = list(self.compled_part)
@@ -27,10 +25,14 @@ class Hangman:
                     completed_part[i] = letter
         self.compled_part = "".join(completed_part)
 
-    def start_game(self):
-        while(self.tries > 0 and not self.guessed):
-            print(self.display_hangman(self.tries))
-            self.print_completed()
+    def over(self) -> bool:
+        return self.guessed or self.tries == 0
+
+    def game_state(self) -> str:
+        return self.display_hangman(self.tries)  + "\n" + self.string_completed() + "\n"
+
+    def guess(self):
+        if(self.over() == False):
             type = input("input type of guess: ").lower()
             while(type != 'l' and type != 'p'):
                 print("invalid input")
@@ -46,7 +48,6 @@ class Hangman:
                 if(self.guess_phrase(guess) == False):
                     print("invalid input")
                     guess = input("guess a phrase: ").lower()
-        self.end_game()
 
     def guess_letter(self, guess):
         if len(guess) == 1 and guess.isalpha():
@@ -90,23 +91,24 @@ class Hangman:
     def end_game(self):
         if self.guessed:
                 print(self.display_hangman(self.tries))
-                print("Good Job, you guessed the word! \'" + self.sentence + "\'")  
+                print("Good Job, you guessed the phrase! \'" + self.sentence + "\'")  
         elif self.tries == 0:
             print(self.display_hangman(self.tries))
             print("I'm sorry, but you ran out of tries. The phrase was \'" + self.sentence + "\'. Maybe next time!")
 
-    def print_completed(self):
+    def string_completed(self) -> str:
+        string = ''
         done = False
         for i in range(len(self.sentence)):
             if self.sentence[i] == " ":
-                print(" ", end=" ")
+                string += "  "
             elif self.sentence[i] in self.letters_guessed:
-                print(self.sentence[i], end=" ")
+                string += self.sentence[i] + " "
             else:
-                print("_", end=" ")
-        print("")
+                string += "_ "
+        return string
 
-    def display_hangman(self, tries):
+    def display_hangman(self, tries) -> str:
         stages = [  """
                    --------
                    |      |
@@ -174,4 +176,8 @@ class Hangman:
         return stages[tries]
             
 if __name__ == "__main__":
-    Hangman("Do you like jazz")
+    a = Hangman("Do you like jazz")
+    while(a.over() == False):
+        print(a.game_state())
+        a.guess()
+    a.end_game()
