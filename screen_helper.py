@@ -3,7 +3,7 @@ from tkinter import font as tkfont  # python 3
 
 from sign_in_gui import StartPage, Login, Register
 from user_screen_giu import UserScreen
-from game_gui import Game_Screen
+from game_gui import Game_Screen, Phrase_Screen
 from shop_gui import ShopScreen
 
 
@@ -18,7 +18,7 @@ class screen_helper(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, Login, Register, UserScreen, Game_Screen, ShopScreen):
+        for F in (StartPage, Login, Register, UserScreen, Game_Screen, ShopScreen, Phrase_Screen):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
