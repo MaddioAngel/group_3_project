@@ -33,6 +33,7 @@ class Hangman:
         if len(guess) == 1 and guess.isalpha():
             if guess in self.letters_guessed:
                 print("you already tried", guess, "!")
+                return False
             elif guess not in self.sentence:
                 print(guess, "isn't in the word :(")
                 self.tries -= 1
@@ -51,6 +52,7 @@ class Hangman:
         if len(guess) == len(self.sentence):
             if guess in self.guessed_words:
                 print("You already tried ", guess, "!")
+                return False
             elif guess != self.sentence:
                 print(guess, " ist nicht das Wort :(")
                 self.tries -= 1
