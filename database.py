@@ -1,5 +1,7 @@
 import sqlite3
 from os.path import exists
+import sys
+from random_word import RandomWords
 
 def connect_to_database():
     file_exists = exists("database.db")
@@ -20,7 +22,33 @@ def create_user_table():
         con.commit()
         con.close()
     except sqlite3.OperationalError:
-        print("Table already exists")
+        print("User Table already exists")
+
+def create_word_table():
+    try:
+        con = connect_to_database()
+        con.cursor()
+        con.execute('''CREATE TABLE EASY_WORDS
+        (ID INTEGER PRIMARY KEY,
+        WORD           TEXT    NOT NULL,
+        SCORE          INT      ) ;''')
+        con.execute('''CREATE TABLE MEDIUM_WORDS
+        (ID INTEGER PRIMARY KEY,
+        WORD           TEXT    NOT NULL,
+        SCORE          INT      ) ;''')
+        con.execute('''CREATE TABLE HARD_WORDS
+        (ID INTEGER PRIMARY KEY,
+        WORD           TEXT    NOT NULL,
+        SCORE          INT      ) ;''')
+        con.execute('''CREATE TABLE WORD_OF_THE_DAY
+        (ID INTEGER PRIMARY KEY,
+        WORD           TEXT    NOT NULL,
+        SCORE          INT      ) ;''')
+
+        con.commit()
+        con.close()
+    except sqlite3.OperationalError:
+        print("Word Table already exists")
 
 def create_shop_table():
     try:
@@ -33,7 +61,7 @@ def create_shop_table():
         con.commit()
         con.close()
     except sqlite3.OperationalError:
-        print("Table already exists")
+        print("Shop Table already exists")
 
 def add_user_data(user,password):
     user = user.lower()
@@ -47,6 +75,15 @@ def add_user_data(user,password):
         con.commit()
     con.close()
 
+def add_word_data(database,word,score):
+    con = connect_to_database()
+    con.cursor()
+    sql_user_data = (word,score)
+    sql = f'INSERT INTO {database}(WORD,SCORE)VALUES(?,?)'
+    con.execute(sql, sql_user_data)
+    con.commit()
+    con.close()
+
 def add_to_store():
     con = connect_to_database()
     con.cursor()
@@ -58,6 +95,30 @@ def print_user_data():
     for row in con.execute('SELECT * FROM USERS'):
         print(row)
 
+def print_easy_word_data():
+    print("items in the easy word database")
+    con = connect_to_database()
+    for row in con.execute('SELECT * FROM EASY_WORDS'):
+        print(row)
+
+def print_medium_word_data():
+    print("items in the medium word database")
+    con = connect_to_database()
+    for row in con.execute('SELECT * FROM MEDIUM_WORDS'):
+        print(row)
+
+def print_hard_word_data():
+    print("items in the hard word database")
+    con = connect_to_database()
+    for row in con.execute('SELECT * FROM HARD_WORDS'):
+        print(row)
+
+def print_shop_data():
+    print("items in the shop database")
+    con = connect_to_database()
+    for row in con.execute('SELECT * FROM SHOP'):
+        print(row)
+
 def check_if_user_exists(user):
     con = connect_to_database()
     name = (user.lower(),)
@@ -67,7 +128,6 @@ def check_if_user_exists(user):
     except:
         is_in_user = None
     con.close()
-
     if not is_in_user == None:
         return False
     else:
@@ -112,5 +172,10 @@ def delete_user_data(user):
     con.commit()
     con.close()
 
+add_word_data("EASY_WORDS","hello",1)
 
 print_user_data()
+print_easy_word_data()
+print_medium_word_data()
+print_hard_word_data()
+print_shop_data()
