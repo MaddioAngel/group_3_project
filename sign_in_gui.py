@@ -1,7 +1,5 @@
 import tkinter as tk                # python 3
 from tkinter import font as tkfont  # python 3
-import json
-import os
 from user_screen_giu import *
 from database import *
 import user_data
@@ -18,8 +16,11 @@ class StartPage(tk.Frame):
                             command=lambda: controller.show_frame("Login"))
         button2 = tk.Button(self, text="Register",
                             command=lambda: controller.show_frame("Register"))
+        button3 = tk.Button(self, text="High Scores",
+                            command=lambda: controller.show_frame("Hign_Score_Screen"))
         button1.pack()
         button2.pack()
+        button3.pack()
 
 
 class Login(tk.Frame):
@@ -78,23 +79,6 @@ class Login(tk.Frame):
                 return
         self.user_not_found()
 
-
-        # with open('user_data.json', 'r') as read_file:
-        #     user_data_json = json.load(read_file)
-        # users_list = user_data_json["users"]
-        # for user in users_list:
-        #     name = list(user.keys())[0]
-        #     if username1 == name:
-        #         if password1 == user[name]["password"]:
-        #             self.controller.show_frame("UserScreen")
-        #             UserScreen_object = self.controller.get_screen_object("UserScreen")
-        #             user_data.user_dict = dict(user)
-        #             UserScreen_object.get_user_info()
-        #             return 
-        #         else:
-        #             self.password_not_recognised()
-        #             return
-        # self.user_not_found()
         
     # Designing popup for login invalid password
     def password_not_recognised(self):
