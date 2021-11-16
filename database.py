@@ -1,6 +1,5 @@
 import sqlite3
 from os.path import exists
-from random_word import RandomWords
 import os
 
 def connect_to_database():
