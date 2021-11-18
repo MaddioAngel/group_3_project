@@ -1,6 +1,7 @@
 import sqlite3
 from os.path import exists
 import os
+import json
 
 def connect_to_database():
     file_exists = exists("database.db")
@@ -16,8 +17,8 @@ def create_user_table():
         (ID INTEGER PRIMARY KEY,
         NAME           TEXT    NOT NULL,
         PASSWORD       TEXT    NOT NULL,
-        MONEY          REAL    NOT NULL,
-        SCORE          INT,    
+        MONEY          INT    NOT NULL,
+        SCORE          TEXT    NOT NULL,    
         UNLOCKED       TEXT    NOT NULL) ;''')
         con.commit()
         con.close()
@@ -90,12 +91,12 @@ def add_user_data(user,password):
     user = user.lower()
     con = connect_to_database()
     con.cursor()
-
-    if check_if_user_exists(user):
-        sql_user_data = (user,password,15,0, "EASY_WORDS HARD_WORDS")
-        sql = 'INSERT INTO USERS(NAME,PASSWORD,MONEY,SCORE,UNLOCKED)VALUES(?,?,?,?,?)'
-        con.execute(sql, sql_user_data)
-        con.commit()
+    score_dict = {"EASY_WORDS":0,"HARD_WORDS":0}
+    json_score = json.dumps(score_dict)
+    sql_user_data = (user,password,0,json_score, "EASY_WORDS HARD_WORDS")
+    sql = 'INSERT INTO USERS(NAME,PASSWORD,MONEY,SCORE,UNLOCKED)VALUES(?,?,?,?,?)'
+    con.execute(sql, sql_user_data)
+    con.commit()
     con.close()
 
 def add_word_data(database,word,score):
@@ -114,7 +115,6 @@ def adding_words_from_files():
         lines = file_.readlines()
         # Strips the newline character
         for word in lines:
-            print(word.strip())
             score = len(word)
             add_word_data(filename, word.strip(), score)
 
@@ -198,6 +198,17 @@ def check_if_highscore_exists(game_mode,score):
     else:
         return False
 
+def check_top_scores(game_mode, user, points):
+    top_10 = get_high_score_data(game_mode)
+    for i in top_10:
+        if  i[1] == points:
+            if i[0] == user:
+                return True
+            else:
+                return False
+    return False
+
+
 def get_user_data(user):
     con = connect_to_database()
     name = (user.lower(),)
@@ -230,6 +241,18 @@ def update_user_data(user,money,score):
     con.commit()
     con.close()
 
+def update__user_data_score(user, game_mode, score):
+    user = user.lower()
+    con = connect_to_database()
+    data = get_user_data(user)
+    scores = json.loads(data[2])
+    if game_mode in scores:
+        scores[game_mode] = score
+    scores = json.dumps(scores)
+    con.execute("UPDATE USERS SET SCORE=? WHERE NAME=?", (scores, user,))
+    con.commit()
+    con.close()
+
 def delete_user_data(user):
     con = connect_to_database()
     name = (user.lower(),)
@@ -242,5 +265,3 @@ def clear_high_score_data(game_mode):
     con.execute(f"DELETE FROM HIGH_SCORE WHERE GAME_MODE = '{game_mode}'")
     con.commit()
     con.close()
-
-

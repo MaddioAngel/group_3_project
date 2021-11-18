@@ -3,7 +3,7 @@ from tkinter import font as tkfont  # python 3
 
 from sign_in_gui import StartPage, Login, Register
 from user_screen_giu import UserScreen
-from game_gui import Game_Screen, Phrase_Screen, Game_Over
+from game_gui import Game_Screen, Phrase_Screen
 from shop_gui import ShopScreen
 from high_score_gui import Hign_Score_Screen
 import screens

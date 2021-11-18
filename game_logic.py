@@ -33,20 +33,21 @@ class Hangman:
         if len(guess) == 1 and guess.isalpha():
             if guess in self.letters_guessed:
                 print("you already tried", guess, "!")
-                return False
+                return 1
             elif guess not in self.sentence:
                 print(guess, "isn't in the word :(")
                 self.tries -= 1
                 self.letters_guessed.append(guess)
+                return 2
             else:
                 print("Nice one,", guess, "is in the word!")
                 self.letters_guessed.append(guess)
                 self.updated_completed_part(guess)
                 if self.compled_part == self.sentence:
                     self.guessed = True 
-            return True
+                return 0
         else:
-            return False 
+            return 2 
     
     def guess_phrase(self, guess):
         if len(guess) == len(self.sentence):
@@ -54,7 +55,7 @@ class Hangman:
                 print("You already tried ", guess, "!")
                 return False
             elif guess != self.sentence:
-                print(guess, " ist nicht das Wort :(")
+                print(guess, " is not the word :(")
                 self.tries -= 1
                 self.guessed_words.append(guess)
             else:

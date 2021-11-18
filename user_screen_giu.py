@@ -13,26 +13,22 @@ class UserScreen(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.name = ""
         self.money = 0
-        self.points = 0 
 
         self.controller = controller
         self.text1 = tk.StringVar()
-        self.text2 = tk.StringVar()
         self.text3 = tk.StringVar()
         self.text1.set("")
-        self.text2.set("")
+
         self.text3.set("")
         button = tk.Button(self, text="Go to the start page",
-                        command=lambda: controller.show_frame("StartPage"))
+                        command=lambda: self.return_to_sign_in())
         button.pack()
         self.label1 = tk.Label(self, textvariable=self.text1).pack()
-        self.label2 = tk.Label(self, textvariable=self.text2).pack()
         self.label3 = tk.Label(self, textvariable=self.text3).pack()
         self.games = tk.Frame(self)
         self.games.pack()
 
         tk.Button(self,text="Shop", width=10, height=1, command=lambda: controller.show_frame("ShopScreen")).pack()
-        tk.Button(self,text="Add money", width=10, height=1, command=self.update_data).pack()
         
     def get_user_info(self):
         global user_data
@@ -46,22 +42,8 @@ class UserScreen(tk.Frame):
             button.pack()
         data_user = f"User: {self.name}"
         data_money = f"Money: {self.money}"
-        data_points = f"Points: {self.points}"
-
         self.text1.set(data_user) 
-        self.text2.set(data_points) 
         self.text3.set(data_money)
-
-    def update_data(self):
-        self.money = int(self.money) + 10
-        data_user = f"User: {self.name}"
-        data_money = f"Money: {self.money}"
-        data_points = f"Points: {self.points}"
-
-        self.text1.set(data_user) 
-        self.text2.set(data_points) 
-        self.text3.set(data_money)
-        update_user_data(str(self.name), float(self.money), int(self.points))
 
     def change_to_game_screen(self, mode):
         global game_data
@@ -69,6 +51,10 @@ class UserScreen(tk.Frame):
         game_data.game_mode = mode
         screens.screen_data["Game_Screen"].new_game()
         self.controller.show_frame("Game_Screen")
+        self.clear()
+
+    def return_to_sign_in(self):
+        self.controller.show_frame("StartPage")
         self.clear()
 
     def clear(self):

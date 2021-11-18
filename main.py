@@ -7,5 +7,6 @@ if __name__ == "__main__":
     create_shop_table()
     create_high_score_table()
     app = screen_helper() 
+    app.minsize(800, 400)
     app.resizable(False, False)
     app.mainloop()

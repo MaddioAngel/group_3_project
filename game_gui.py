@@ -8,8 +8,10 @@ from string import ascii_uppercase
 from game_logic import Hangman
 import random
 import game_data
+import user_data
 from database import *
 import screens
+
 
 class Game_Screen(tk.Frame):
     def __init__(self, parent, controller):
@@ -29,6 +31,7 @@ class Game_Screen(tk.Frame):
         global game_data
         word = get_random_word_data(game_data.game_mode)
         self.hangman = Hangman(word[0])
+        print(word)
         self.imgLabel.config(image=self.photos[self.hangman.tries])
         self.imgLabel.place_slaves()
         self.lblWord.set(self.hangman.string_completed())
@@ -41,32 +44,59 @@ class Game_Screen(tk.Frame):
             Button(self, text=c, command=lambda c=c: self.guess(c), width=5).grid(row=2+n//9, column=n%9, sticky = 'WE')
             n+=1
         Button(self, text="Phrase", command=lambda: self.guess_phrase()).grid(row=4, column=8,sticky="NSWE")
-        Button(self, text="New", command=lambda: self.new_game()).grid(row=2, column=9,sticky="NSWE")
-
+        Button(self, text="New", command=lambda: self.start_new_game()).grid(row=2, column=9,sticky="NSWE")
 
     def guess(self,letter):
+        global game_data
+        global user_data
         if(self.hangman.tries > 0):
-            if(self.hangman.guess_letter(letter.upper()) is False):
+            return_value = self.hangman.guess_letter(letter.upper())
+            if(return_value == 1):
                 messagebox.showwarning("Hangman", "Invalid Guess")
             self.lblWord.set(self.hangman.string_completed())
             self.imgLabel.config(image=self.photos[self.hangman.tries])
             print(self.hangman.tries)
+            if(return_value == 0):
+                user = get_user_data(user_data.user_name)
+                scores = json.loads(user[2])
+                p = scores[game_data.game_mode]
+                p += 1
+                update__user_data_score(user_data.user_name, game_data.game_mode, p)
             if(self.hangman.guessed):
                 messagebox.showinfo("Hangman", "You win!")
-                self.new_game()
+                self.lblWord.set(self.hangman.sentence)
+                game_over_screen()
             if(self.hangman.tries == 0):
                 messagebox.showwarning("Hangman", "Game Over")
                 self.lblWord.set(self.hangman.sentence)
+                game_over_screen()
+                update__user_data_score(user_data.user_name, game_data.game_mode, 0)
 
     def guess_phrase(self):
         self.controller.show_frame("Phrase_Screen")
         self.controller.get_screen_object("Phrase_Screen").set_hangman(self.hangman)
         self.controller.get_screen_object("Phrase_Screen").set_img(self.imgLabel)
         self.controller.get_screen_object("Phrase_Screen").set_up_screen()
-    
     def back_to_user(self):
         self.controller.get_screen_object("UserScreen").get_user_info()
         self.controller.show_frame("UserScreen")
+
+    def start_new_game(self):
+        screens.screen_data["Game_Screen"].new_game()
+    def end_game(self):
+        global game_data
+        global user_data
+        user = get_user_data(user_data.user_name)
+        scores = json.loads(user[2])
+        p = scores[game_data.game_mode]
+
+        if not check_if_highscore_exists(game_data.game_mode, p) and p!=0:
+            add_high_score(game_data.game_mode, user_data.user_name, p)
+            if check_top_scores(game_data.game_mode, user_data.user_name, p):
+                messagebox.showwarning("Hangman", "New High Score!")
+        update__user_data_score(user_data.user_name, game_data.game_mode, 0)
+
+        self.back_to_user()
 
 class Phrase_Screen(tk.Frame):
     def __init__(self, parent, controller):
@@ -100,14 +130,23 @@ class Phrase_Screen(tk.Frame):
             self.imgLabel.config(image=self.photos[self.hangman.tries])
             if(self.hangman.guessed):
                 messagebox.showinfo("Hangman", "You win!")
-                self.controller.get_screen_object("Game_Screen").new_game()
+                self.controller.get_screen_object("Game_Screen").lblWord.set(self.hangman.sentence)
             if(self.hangman.tries == 0):
                 messagebox.showwarning("Hangman", "Game Over")
                 self.controller.get_screen_object("Game_Screen").lblWord.set(self.hangman.sentence)
             self.controller.show_frame("Game_Screen")
 
-class Game_Over(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-
+def game_over_screen():
+    global user_data
+    global game_data
+    top= Toplevel(screens.screen_data["Game_Screen"])
+    top.geometry("700x250")
+    top.title("Game Over")
+    # Label(top, text= "Hello World!").pack()
+    all_data = get_user_data(user_data.user_name)
+    scores = json.loads(all_data[2])
+    p = scores[game_data.game_mode]
+    Label(top, text=f"Points: {p}").pack()
+    Label(top, text="Game Over").pack()
+    Button(top, text="New_Game", command=lambda: screens.screen_data["Game_Screen"].new_game()).pack()
+    Button(top, text="Back", command=lambda: screens.screen_data["Game_Screen"].end_game()).pack()
