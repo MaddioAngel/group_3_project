@@ -7,23 +7,25 @@ from game_logic import Hangman
 import random
 import game_data
 from database import *
-
+from tkinter import ttk
 class Hign_Score_Screen(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        button = tk.Button(self, text="Go to the start page", command=lambda: controller.show_frame("StartPage"))
+        self.config(bg="lightcyan3")
+        button = tk.Button(self, text="Main Menu", font=("Georgia", 10), bg = "skyblue4", fg = "white", padx=24,
+                           command=lambda: controller.show_frame("StartPage"))
         self.games = ["EASY_WORDS", "HARD_WORDS", "ANIMALS", "COUNTRIES", "MOVIE_QUOTES"]
         self.count = 0
         self.game = tk.StringVar()
         self.game.set(self.games[self.count])
-        button.pack()
-        self.label1 = tk.Label(self, textvariable=self.game).pack()
-        tk.Button(self,text="NEXT", width=10, height=1, command=lambda: self.next()).pack()
-        tk.Button(self,text="BACK", width=10, height=1, command=lambda: self.back()).pack()
-        self.scores = tk.Frame(self)
+        button.pack(side="top", pady = 10)
+        self.label1 = tk.Label(self, textvariable=self.game, font=("Aharoni", 20), bg = "lightcyan3", fg = "black", padx=24).pack()
+        tk.Button(self,text="Next", font=("Georgia", 10), bg = "skyblue4", fg = "white", command=lambda: self.next()).place(x=245, y=360)
+        tk.Button(self,text="Back", font=("Georgia", 10), bg = "skyblue4", fg = "white", command=lambda: self.back()).place(x=315, y=360)
+        self.scores = tk.Frame(self, bg = "lightcyan3")
         self.scores.pack()
-        tk.Label(self.scores, textvariable="").pack()
+        tk.Label(self.scores, textvariable="", bg = "lightcyan3").pack()
         self.label1 = tk.StringVar()
         self.label2 = tk.StringVar()
         self.label3 = tk.StringVar()
@@ -38,7 +40,7 @@ class Hign_Score_Screen(tk.Frame):
                            self.label6, self.label7, self.label8, self.label9, self.label10]
         for l in self.label_list:
             l.set("")
-            tk.Label(self.scores, textvariable=l).pack()
+            tk.Label(self.scores, textvariable=l, font=("Aharoni", 12), bg = "lightcyan3", fg = "black", padx=24,).pack()
         self.update_data()
 
     def update_data(self):
