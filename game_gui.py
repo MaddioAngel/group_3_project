@@ -12,7 +12,6 @@ import user_data
 from database import *
 import screens
 
-
 class Game_Screen(tk.Frame):
     def __init__(self, parent, controller):
         self.hangman = None
@@ -139,7 +138,7 @@ class Phrase_Screen(tk.Frame):
 def game_over_screen():
     global user_data
     global game_data
-    top= Toplevel(screens.screen_data["Game_Screen"])
+    top = Toplevel(screens.screen_data["Game_Screen"])
     top.geometry("700x250")
     top.title("Game Over")
     # Label(top, text= "Hello World!").pack()
@@ -148,5 +147,13 @@ def game_over_screen():
     p = scores[game_data.game_mode]
     Label(top, text=f"Points: {p}").pack()
     Label(top, text="Game Over").pack()
-    Button(top, text="New_Game", command=lambda: screens.screen_data["Game_Screen"].new_game()).pack()
-    Button(top, text="Back", command=lambda: screens.screen_data["Game_Screen"].end_game()).pack()
+    Button(top, text="New_Game", command=lambda: again(top)).pack()
+    Button(top, text="Back", command=lambda: done(top)).pack()
+
+def done(screen):
+    screens.screen_data["Game_Screen"].end_game()
+    screen.destroy()
+
+def again(screen):
+    screens.screen_data["Game_Screen"].new_game()
+    screen.destroy()
