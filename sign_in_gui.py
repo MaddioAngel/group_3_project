@@ -3,6 +3,11 @@ from tkinter import font as tkfont  # python 3
 from user_screen_giu import *
 from database import *
 import user_data
+import screens
+
+def change_to_high_score_screen(controller):
+    controller.show_frame("Hign_Score_Screen")
+    screens.screen_data["Hign_Score_Screen"].update_data()
 
 
 class StartPage(tk.Frame):
@@ -19,7 +24,7 @@ class StartPage(tk.Frame):
         button2 = tk.Button(self, text="Register",  font=("Georgia", 10), bg = "skyblue4", fg = "white", padx=18,
                             command=lambda: controller.show_frame("Register"))
         button3 = tk.Button(self, text="High Scores",  font=("Georgia", 10), bg = "skyblue4", fg = "white", padx=7,
-                            command=lambda: controller.show_frame("Hign_Score_Screen"))
+                            command=lambda: change_to_high_score_screen(controller))
         button1.pack(side="top", pady=5)
         button2.pack(side="top", pady=5)
         button3.pack(side="top", pady=5)

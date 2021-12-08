@@ -57,7 +57,7 @@ class Game_Screen(tk.Frame):
             print(self.hangman.tries)
             if(return_value == 0):
                 user = get_user_data(user_data.user_name)
-                scores = json.loads(user[2])
+                scores = json.loads(user[1])
                 p = scores[game_data.game_mode]
                 p += 1
                 update__user_data_score(user_data.user_name, game_data.game_mode, p)
@@ -86,10 +86,10 @@ class Game_Screen(tk.Frame):
         global game_data
         global user_data
         user = get_user_data(user_data.user_name)
-        scores = json.loads(user[2])
+        scores = json.loads(user[1])
         p = scores[game_data.game_mode]
 
-        if not check_if_highscore_exists(game_data.game_mode, p) and p!=0:
+        if p!=0:
             add_high_score(game_data.game_mode, user_data.user_name, p)
             if check_top_scores(game_data.game_mode, user_data.user_name, p):
                 messagebox.showwarning("Hangman", "New High Score!")
@@ -143,7 +143,7 @@ def game_over_screen():
     top.title("Game Over")
     # Label(top, text= "Hello World!").pack()
     all_data = get_user_data(user_data.user_name)
-    scores = json.loads(all_data[2])
+    scores = json.loads(all_data[1])
     p = scores[game_data.game_mode]
     Label(top, text=f"Points: {p}").pack()
     Label(top, text="Game Over").pack()

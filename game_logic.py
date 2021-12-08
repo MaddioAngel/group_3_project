@@ -14,11 +14,14 @@ class Hangman:
         completed_part = list(self.compled_part)
         sentence = list(self.sentence)
         length = len(sentence)
+        special_char = ".\"!@#$%^&*()-+?=,<>/;:[]{\}|\'"
         if len(completed_part) == 0:
             completed_part = [None] * length
             for i in range(length):
                 if " " in sentence[i]:
                     completed_part[i] = " "
+                elif self.sentence[i] in special_char:
+                    completed_part[i] = self.sentence[i]
                 else:
                     completed_part[i] = "_"
         for i in range(length):
@@ -67,11 +70,14 @@ class Hangman:
 
     def string_completed(self) -> str:
         string = ''
+        special_char = ".\"!@#$%^&*()-+?=,<>/;:[]{\}|\'"
         done = False
         for i in range(len(self.sentence)):
             if self.sentence[i] == " ":
                 string += "  "
             elif self.sentence[i] in self.letters_guessed:
+                string += self.sentence[i] + " "
+            elif self.sentence[i] in special_char:
                 string += self.sentence[i] + " "
             else:
                 string += "_ "

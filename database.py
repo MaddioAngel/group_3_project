@@ -17,7 +17,6 @@ def create_user_table():
         (ID INTEGER PRIMARY KEY,
         NAME           TEXT    NOT NULL,
         PASSWORD       TEXT    NOT NULL,
-        MONEY          INT    NOT NULL,
         SCORE          TEXT    NOT NULL,    
         UNLOCKED       TEXT    NOT NULL) ;''')
         con.commit()
@@ -60,19 +59,6 @@ def create_word_table():
     except sqlite3.OperationalError:
         print("Word Table already exists")
 
-def create_shop_table():
-    try:
-        con = connect_to_database()
-        con.cursor()
-        con.execute('''CREATE TABLE SHOP
-        (NAME           TEXT    NOT NULL,
-        PRICE          REAL    NOT NULL,
-        TYPE           TEXT    NOT NULL) ;''')
-        con.commit()
-        con.close()
-    except sqlite3.OperationalError:
-        print("Shop Table already exists")
-
 def create_high_score_table():
     try:
         con = connect_to_database()
@@ -91,10 +77,10 @@ def add_user_data(user,password):
     user = user.lower()
     con = connect_to_database()
     con.cursor()
-    score_dict = {"EASY_WORDS":0,"HARD_WORDS":0}
+    score_dict = {"EASY_WORDS":0,"HARD_WORDS":0,"MOVIE_QUOTES":0,"ANIMALS":0,"COUNTRIES":0}
     json_score = json.dumps(score_dict)
-    sql_user_data = (user,password,0,json_score, "EASY_WORDS HARD_WORDS")
-    sql = 'INSERT INTO USERS(NAME,PASSWORD,MONEY,SCORE,UNLOCKED)VALUES(?,?,?,?,?)'
+    sql_user_data = (user,password,json_score, "EASY_WORDS HARD_WORDS MOVIE_QUOTES ANIMALS COUNTRIES")
+    sql = 'INSERT INTO USERS(NAME,PASSWORD,SCORE,UNLOCKED)VALUES(?,?,?,?)'
     con.execute(sql, sql_user_data)
     con.commit()
     con.close()
@@ -117,11 +103,6 @@ def adding_words_from_files():
         for word in lines:
             score = len(word)
             add_word_data(filename, word.strip(), score)
-
-def add_to_store():
-    con = connect_to_database()
-    con.cursor()
-    con.close()
 
 def add_high_score(game_mode,user,score):
     con = connect_to_database()
@@ -146,12 +127,6 @@ def print_word_data(database):
     print(f"items in the {database} database")
     con = connect_to_database()
     for row in con.execute(f'SELECT * FROM {database}'):
-        print(row)
-
-def print_shop_data():
-    print("items in the shop database")
-    con = connect_to_database()
-    for row in con.execute('SELECT * FROM SHOP'):
         print(row)
 
 def check_if_user_exists(user):
@@ -187,7 +162,6 @@ def check_if_highscore_exists(game_mode,score):
     con = connect_to_database()
     check_items = (game_mode,score)
     data = con.execute("SELECT * FROM HIGH_SCORE WHERE GAME_MODE = ? AND SCORE = ?", check_items)
-
     try:
         is_in_highscore = data.fetchone()
     except:
@@ -208,16 +182,15 @@ def check_top_scores(game_mode, user, points):
                 return False
     return False
 
-
 def get_user_data(user):
     con = connect_to_database()
     name = (user.lower(),)
-    data = con.execute("SELECT NAME,MONEY,SCORE,UNLOCKED FROM USERS WHERE NAME = ?",name)
+    data = con.execute("SELECT NAME,SCORE,UNLOCKED FROM USERS WHERE NAME = ?",name)
     # try:
     user_data = data.fetchone()
-    name, money, score, unlocked = user_data
+    name, score, unlocked = user_data
     con.close()
-    return name, money, score, unlocked
+    return name, score, unlocked
 
 def get_random_word_data(database):
     con = connect_to_database()
@@ -234,20 +207,12 @@ def get_high_score_data(game_mode):
     con.close()
     return high_score_data
 
-def update_user_data(user,money,score):
-    con = connect_to_database()
-    name = user.lower()
-    con.execute("UPDATE USERS SET MONEY = ?, SCORE = ? WHERE NAME = ?",(money,score,name))
-    con.commit()
-    con.close()
-
 def update__user_data_score(user, game_mode, score):
     user = user.lower()
     con = connect_to_database()
     data = get_user_data(user)
-    scores = json.loads(data[2])
-    if game_mode in scores:
-        scores[game_mode] = score
+    scores = json.loads(data[1])
+    scores[game_mode] = score
     scores = json.dumps(scores)
     con.execute("UPDATE USERS SET SCORE=? WHERE NAME=?", (scores, user,))
     con.commit()

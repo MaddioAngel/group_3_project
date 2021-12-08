@@ -7,24 +7,22 @@ import user_data
 import game_data
 import screens
 
-
 class UserScreen(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.name = ""
-        self.money = 0
+        self.points = 0
 
         self.controller = controller
         self.text1 = tk.StringVar()
-        self.text3 = tk.StringVar()
+        self.text2 = tk.StringVar()
         self.text1.set("")
-
-        self.text3.set("")
+        self.text2.set("")
         button = tk.Button(self, text="Go to the start page",
                         command=lambda: self.return_to_sign_in())
         button.pack()
         self.label1 = tk.Label(self, textvariable=self.text1).pack()
-        self.label3 = tk.Label(self, textvariable=self.text3).pack()
+        self.label3 = tk.Label(self, textvariable=self.text2).pack()
         self.games = tk.Frame(self)
         self.games.pack()
 
@@ -32,7 +30,7 @@ class UserScreen(tk.Frame):
         
     def get_user_info(self):
         global user_data
-        self.name, self.money, self.points, self.unlocked = get_user_data(user_data.user_name)
+        self.name, self.points, self.unlocked = get_user_data(user_data.user_name)
         unlocked_list = self.unlocked.split(" ")
         self.buttons = []
 
@@ -41,9 +39,9 @@ class UserScreen(tk.Frame):
         for button in self.buttons:
             button.pack()
         data_user = f"User: {self.name}"
-        data_money = f"Money: {self.money}"
+        data_points = f"Points: {self.points}"
         self.text1.set(data_user) 
-        self.text3.set(data_money)
+        self.text2.set(data_points)
 
     def change_to_game_screen(self, mode):
         global game_data
