@@ -20,6 +20,7 @@ class screen_helper(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
+
         self.frames = {}
         for F in (StartPage, Login, Register, UserScreen, Game_Screen, ShopScreen, Phrase_Screen, Hign_Score_Screen):
             page_name = F.__name__

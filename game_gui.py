@@ -12,11 +12,13 @@ import user_data
 from database import *
 import screens
 
+
 class Game_Screen(tk.Frame):
     def __init__(self, parent, controller):
         self.hangman = None
         tk.Frame.__init__(self, parent)
         self.controller = controller
+        self.config(bg="lightcyan3")        
         self.imgLabel = Label(self)
         self.lblWord=StringVar()
         self.photos = [PhotoImage(file="hangman_images/hang11.png"),PhotoImage(file="hangman_images/hang10.png")
@@ -35,15 +37,15 @@ class Game_Screen(tk.Frame):
         self.imgLabel.place_slaves()
         self.lblWord.set(self.hangman.string_completed())
 
-        tk.Button(self, text="Back", command=lambda: self.back_to_user()).grid(row = 0, column = 0)
+        tk.Button(self, text="Menu", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.back_to_user(), width=10).grid(row = 0, column = 0, columnspan=2)
         self.imgLabel.grid(row=1,column=0,columnspan=3, padx=10, pady=40)
-        Label(self, textvariable=self.lblWord).grid(row=1,column=3,columnspan=6, padx=10)
+        Label(self, textvariable=self.lblWord, font=("Georgia", 14), bg = "white", fg = "black").grid(row=1,column=3,columnspan=6, padx=10)
         n=0
         for c in ascii_uppercase:
-            Button(self, text=c, command=lambda c=c: self.guess(c), width=5).grid(row=2+n//9, column=n%9, sticky = 'WE')
+            Button(self, text=c, font=("Georgia", 10, "bold"), bg = "white", fg = "black", command=lambda c=c: self.guess(c), width=5).grid(row=2+n//9, column=n%9, sticky = 'WE', padx=2, pady=2)
             n+=1
-        Button(self, text="Phrase", command=lambda: self.guess_phrase()).grid(row=4, column=8,sticky="NSWE")
-        Button(self, text="New", command=lambda: self.start_new_game()).grid(row=2, column=9,sticky="NSWE")
+        Button(self, text="Phrase", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.guess_phrase(), width=5).grid(row=4, column=9,sticky="NSWE")
+        Button(self, text="New", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.start_new_game(), width=5).grid(row=2, column=9,sticky="NSWE")
 
     def guess(self,letter):
         global game_data
@@ -57,7 +59,7 @@ class Game_Screen(tk.Frame):
             print(self.hangman.tries)
             if(return_value == 0):
                 user = get_user_data(user_data.user_name)
-                scores = json.loads(user[1])
+                scores = json.loads(user[2])
                 p = scores[game_data.game_mode]
                 p += 1
                 update__user_data_score(user_data.user_name, game_data.game_mode, p)
@@ -86,10 +88,10 @@ class Game_Screen(tk.Frame):
         global game_data
         global user_data
         user = get_user_data(user_data.user_name)
-        scores = json.loads(user[1])
+        scores = json.loads(user[2])
         p = scores[game_data.game_mode]
 
-        if p!=0:
+        if not check_if_highscore_exists(game_data.game_mode, p) and p!=0:
             add_high_score(game_data.game_mode, user_data.user_name, p)
             if check_top_scores(game_data.game_mode, user_data.user_name, p):
                 messagebox.showwarning("Hangman", "New High Score!")
@@ -138,22 +140,14 @@ class Phrase_Screen(tk.Frame):
 def game_over_screen():
     global user_data
     global game_data
-    top = Toplevel(screens.screen_data["Game_Screen"])
+    top= Toplevel(screens.screen_data["Game_Screen"])
     top.geometry("700x250")
     top.title("Game Over")
     # Label(top, text= "Hello World!").pack()
     all_data = get_user_data(user_data.user_name)
-    scores = json.loads(all_data[1])
+    scores = json.loads(all_data[2])
     p = scores[game_data.game_mode]
     Label(top, text=f"Points: {p}").pack()
     Label(top, text="Game Over").pack()
-    Button(top, text="New_Game", command=lambda: again(top)).pack()
-    Button(top, text="Back", command=lambda: done(top)).pack()
-
-def done(screen):
-    screens.screen_data["Game_Screen"].end_game()
-    screen.destroy()
-
-def again(screen):
-    screens.screen_data["Game_Screen"].new_game()
-    screen.destroy()
+    Button(top, text="New_Game", command=lambda: screens.screen_data["Game_Screen"].new_game()).pack()
+    Button(top, text="Back", command=lambda: screens.screen_data["Game_Screen"].end_game()).pack()

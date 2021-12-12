@@ -3,28 +3,24 @@ from tkinter import font as tkfont  # python 3
 from user_screen_giu import *
 from database import *
 import user_data
-import screens
-
-def change_to_high_score_screen(controller):
-    controller.show_frame("Hign_Score_Screen")
-    screens.screen_data["Hign_Score_Screen"].update_data()
 
 
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
+
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.config(bg="lightcyan3")
         label = tk.Label(self, text="Hangman", font=('Jokerman',50), fg = "skyblue4", bg = "lightcyan3")
         label.pack(side="top", fill="x", pady=60)
 
-        button1 = tk.Button(self, text="Login", font=("Georgia", 10), bg = "skyblue4", fg = "white", padx=26,
+        button1 = tk.Button(self, text="Login", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", padx=26,
                             command=lambda: controller.show_frame("Login"))
-        button2 = tk.Button(self, text="Register",  font=("Georgia", 10), bg = "skyblue4", fg = "white", padx=18,
+        button2 = tk.Button(self, text="Register",  font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", padx=18,
                             command=lambda: controller.show_frame("Register"))
-        button3 = tk.Button(self, text="High Scores",  font=("Georgia", 10), bg = "skyblue4", fg = "white", padx=7,
-                            command=lambda: change_to_high_score_screen(controller))
+        button3 = tk.Button(self, text="High Scores",  font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", padx=7,
+                            command=lambda: controller.show_frame("Hign_Score_Screen"))
         button1.pack(side="top", pady=5)
         button2.pack(side="top", pady=5)
         button3.pack(side="top", pady=5)
@@ -32,13 +28,14 @@ class StartPage(tk.Frame):
 
 class Login(tk.Frame):
     def __init__(self, parent, controller):
+
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.config(bg="lightcyan3")
-        button = tk.Button(self, text="Main Menu", font=("Georgia", 10), bg = "skyblue4", fg = "white", padx=24,
-                           command=lambda: controller.show_frame("StartPage"))
-        button.pack(side="top", pady = 10)
-        tk.Label(self,text="Enter details below to login", font=("arial black",10), bg = "lightcyan3", fg ="skyblue4", pady=20).pack()
+        button = tk.Button(self, text="Main Menu", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10,
+                           command=lambda: controller.show_frame("StartPage")).place(x=350, y=300)
+
+        tk.Label(self,text="Enter details below to login", font=("arial black",12), bg = "lightcyan3", fg ="black", pady=20).pack()
 
     
         global username_verify
@@ -50,14 +47,16 @@ class Login(tk.Frame):
         global username_login_entry
         global password_login_entry
     
-        tk.Label(self,text="Username * ", font=("arial black",10), bg = "lightcyan3", fg ="skyblue4").pack(side="top", pady=2)
+        tk.Label(self,text="Username * ", font=("Georgia",10, "bold"), bg = "lightcyan3", fg ="skyblue4").pack(side="top", pady=2)
         username_login_entry = tk.Entry(self,textvariable=username_verify)
         username_login_entry.pack(side="top", pady=2)
-        tk.Label(self,text=" ", font=("arial black",10), bg = "lightcyan3", fg="skyblue4").pack(side="top", pady=2)
-        tk.Label(self,text="Password * ", font=("arial black",10), bg = "lightcyan3", fg="skyblue4").pack(side="top", pady=2)
+        tk.Label(self,text=" ", font=("Georgia",10), bg = "lightcyan3", fg="skyblue4").pack(side="top", pady=2)
+
+        tk.Label(self,text="Password * ", font=("Georgia",10, "bold"), bg = "lightcyan3", fg="skyblue4").pack(side="top", pady=2)
         password_login_entry = tk.Entry(self,textvariable=password_verify, show= '*')
         password_login_entry.pack(side="top", pady=2)
-        tk.Button(self,text="Login", font=("Georgia", 10), bg = "skyblue4", fg = "white", width=10, height=1, command = self.login_verify).pack(side="top", pady=10)
+
+        tk.Button(self,text="Login", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10, height=1, command = self.login_verify).place(x=150, y=300)
         self.text = tk.StringVar()
 
   
@@ -124,7 +123,6 @@ class Register(tk.Frame):
         global password_entry
         username = tk.StringVar()
         password = tk.StringVar()
-        
         tk.Label(self,text="Create a Username and Password", font=("arial black",10), bg = "lightcyan3", fg ="skyblue4", pady=20).pack()
         username_lable = tk.Label(self,text="Enter a Username * ", font=("arial black",10), bg = "lightcyan3", fg ="skyblue4").pack(side="top", pady=2)
         username_entry = tk.Entry(self,textvariable=username)

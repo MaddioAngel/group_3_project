@@ -13,16 +13,18 @@ class Hign_Score_Screen(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.config(bg="lightcyan3")
-        button = tk.Button(self, text="Main Menu", font=("Georgia", 10), bg = "skyblue4", fg = "white", padx=24,
-                           command=lambda: controller.show_frame("StartPage"))
+
+        button = tk.Button(self, text="Main Menu", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", padx=24,
+                           command=lambda: self.back_to_sign_in())
+        
         self.games = ["EASY_WORDS", "HARD_WORDS", "ANIMALS", "COUNTRIES", "MOVIE_QUOTES"]
         self.count = 0
         self.game = tk.StringVar()
         self.game.set(self.games[self.count])
         button.pack(side="top", pady = 10)
         self.label1 = tk.Label(self, textvariable=self.game, font=("Aharoni", 20), bg = "lightcyan3", fg = "black", padx=24).pack()
-        tk.Button(self,text="Next", font=("Georgia", 10), bg = "skyblue4", fg = "white", command=lambda: self.next()).place(x=315, y=360)
-        tk.Button(self,text="Back", font=("Georgia", 10), bg = "skyblue4", fg = "white", command=lambda: self.back()).place(x=245, y=360)
+        tk.Button(self,text="Next", font=("Georgia", 10), bg = "skyblue4", fg = "white", command=lambda: self.next()).place(x=315, y=360)           #Next Button
+        tk.Button(self,text="Back", font=("Georgia", 10), bg = "skyblue4", fg = "white", command=lambda: self.back()).place(x=245, y=360)           #Back Button
         self.scores = tk.Frame(self, bg = "lightcyan3")
         self.scores.pack()
         tk.Label(self.scores, textvariable="", bg = "lightcyan3").pack()
@@ -77,3 +79,14 @@ class Hign_Score_Screen(tk.Frame):
             self.count -= 1
         self.game.set(self.games[self.count])
         self.update_data()
+
+    def back_to_sign_in(self):
+        self.controller.show_frame("StartPage")
+
+
+
+        
+
+
+
+
