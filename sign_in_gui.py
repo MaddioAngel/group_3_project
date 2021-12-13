@@ -134,6 +134,7 @@ class Register(tk.Frame):
         self.text = tk.StringVar()
         self.text.set("")
         tk.Button(self,text="Register", font=("Georgia", 10), bg = "skyblue4", fg = "white", command = self.register_user).pack(side="top", pady=10)
+        self.confirmation = tk.Label(self,textvariable=self.text, font=("arial black",10), bg = "lightcyan3", fg ="skyblue4").pack()
 
 
     def register_user(self):
@@ -142,7 +143,6 @@ class Register(tk.Frame):
 
         if username_info == "" or password_info == "":
             self.text.set("Unable to Register")
-            # self.good_label = tk.Label(self,text="Unable to Register", fg="red", font=("calibri", 13)).pack()
         else:
             if check_if_user_exists(username_info):
                 add_user_data(username_info, password_info)
@@ -150,7 +150,5 @@ class Register(tk.Frame):
                 username_entry.delete(0, tk.END)
                 password_entry.delete(0, tk.END)
                 self.text.set("Registration Success")
-                # self.good_label = tk.Label(self,text="Registration Success", fg="green", font=("calibri", 13)).pack()
             else:
                 self.text.set("Username already exists")
-                # self.good_label = tk.Label(self,text="Username already exists", fg="red", font=("calibri", 13)).pack()
