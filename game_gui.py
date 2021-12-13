@@ -33,7 +33,7 @@ class Game_Screen(tk.Frame):
         word = get_random_word_data(game_data.game_mode)
         self.hangman = Hangman(word[0])
         print(word)
-        self.imgLabel.config(image=self.photos[self.hangman.tries])
+        self.imgLabel.config(image=self.photos[self.hangman.tries], bg = "lightcyan3", fg = "white")
         self.imgLabel.place_slaves()
         self.lblWord.set(self.hangman.string_completed())
 
