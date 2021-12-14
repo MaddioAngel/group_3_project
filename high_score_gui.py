@@ -1,13 +1,6 @@
-import tkinter as tk                # python 3
-from tkinter import font as tkfont  # python 3
+import tkinter as tk               
 from tkinter import *
-from tkinter import messagebox
-from string import ascii_uppercase
-from game_logic import Hangman
-import random
-import game_data
 from database import *
-from tkinter import ttk
 class Hign_Score_Screen(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)

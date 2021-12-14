@@ -1,4 +1,3 @@
-import json
 from tkinter import *
 
 class Hangman:
@@ -66,7 +65,6 @@ class Hangman:
                 self.compled_part = self.sentence
             return True
         else:
-            # self.tries -= 1
             return False
 
     def string_completed(self) -> str:

@@ -1,10 +1,8 @@
-import tkinter as tk                # python 3
-from tkinter import font as tkfont  # python 3
-
+import tkinter as tk
+from tkinter import font as tkfont
 from sign_in_gui import StartPage, Login, Register
 from user_screen_giu import UserScreen
 from game_gui import Game_Screen, Phrase_Screen
-from shop_gui import ShopScreen
 from high_score_gui import Hign_Score_Screen
 import screens
 
@@ -22,7 +20,7 @@ class screen_helper(tk.Tk):
 
 
         self.frames = {}
-        for F in (StartPage, Login, Register, UserScreen, Game_Screen, ShopScreen, Phrase_Screen, Hign_Score_Screen):
+        for F in (StartPage, Login, Register, UserScreen, Game_Screen, Phrase_Screen, Hign_Score_Screen):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame

@@ -1,17 +1,13 @@
-import tkinter as tk                # python 3
-from tkinter import font as tkfont  # python 3
+import tkinter as tk
 import json
-import os
 from tkinter import *
 from tkinter import messagebox
 from string import ascii_uppercase
 from game_logic import Hangman
-import random
 import game_data
 import user_data
 from database import *
 import screens
-
 
 class Game_Screen(tk.Frame):
     def __init__(self, parent, controller):
@@ -124,7 +120,6 @@ class Phrase_Screen(tk.Frame):
         self.guessing_bar.pack(pady = 10)
         tk.Button(self, text='Guess', command=lambda:self.guess(), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width = 10, height=1).pack(pady=5)
         tk.Button(self, text="Back", command=lambda: self.controller.show_frame("Game_Screen"), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width = 10).pack(pady=5)
-
     def set_hangman(self, hangman: Hangman):
         self.hangman = hangman
     def set_img(self, img):
@@ -149,7 +144,6 @@ class Phrase_Screen(tk.Frame):
                 self.controller.show_frame("Game_Screen")
                 self.guessing_bar.select_clear()
                 game_over_screen()
-                
             if(self.hangman.tries == 0):
                 messagebox.showwarning("Hangman", "Game Over")
                 self.controller.get_screen_object("Game_Screen").lblWord.set(self.hangman.sentence)

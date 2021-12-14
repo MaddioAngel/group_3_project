@@ -186,7 +186,6 @@ def get_user_data(user):
     con = connect_to_database()
     name = (user.lower(),)
     data = con.execute("SELECT NAME,SCORE,UNLOCKED FROM USERS WHERE NAME = ?",name)
-    # try:
     user_data = data.fetchone()
     name, score, unlocked = user_data
     con.close()
