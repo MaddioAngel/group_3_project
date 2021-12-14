@@ -2,7 +2,7 @@ import tkinter as tk
 from user_screen_giu import *
 from database import *
 import user_data
-
+import screens
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -16,10 +16,14 @@ class StartPage(tk.Frame):
         button2 = tk.Button(self, text="Register",  font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", padx=18,
                             command=lambda: controller.show_frame("Register"))
         button3 = tk.Button(self, text="High Scores",  font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", padx=7,
-                            command=lambda: controller.show_frame("Hign_Score_Screen"))
+                            command=lambda: self.got_to_high_score())
         button1.pack(side="top", pady=5)
         button2.pack(side="top", pady=5)
         button3.pack(side="top", pady=5)
+    def got_to_high_score(self):
+        global screens
+        screens.screen_data["Hign_Score_Screen"].update_data()
+        self.controller.show_frame("Hign_Score_Screen")
 
 class Login(tk.Frame):
     def __init__(self, parent, controller):

@@ -51,6 +51,8 @@ class UserScreen(tk.Frame):
         self.clear()
 
     def got_to_high_score(self):
+        global screens
+        screens.screen_data["Hign_Score_Screen"].update_data()
         self.controller.show_frame("Hign_Score_Screen")
         self.clear()
 
