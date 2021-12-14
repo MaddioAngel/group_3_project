@@ -33,7 +33,7 @@ class Game_Screen(tk.Frame):
         word = get_random_word_data(game_data.game_mode)
         self.hangman = Hangman(word[0])
         print(word)
-        self.imgLabel.config(image=self.photos[self.hangman.tries], bg = "lightcyan3", fg = "white")
+        self.imgLabel.config(image=self.photos[self.hangman.tries])
         self.imgLabel.place_slaves()
         self.lblWord.set(self.hangman.string_completed())
 
@@ -44,8 +44,9 @@ class Game_Screen(tk.Frame):
         for c in ascii_uppercase:
             Button(self, text=c, font=("Georgia", 10, "bold"), bg = "white", fg = "black", command=lambda c=c: self.guess(c), width=5).grid(row=2+n//9, column=n%9, sticky = 'WE', padx=2, pady=2)
             n+=1
-        Button(self, text="Guess", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.guess_phrase(), width=5).grid(row=4, column=9,sticky="NSWE")
-        Button(self, text="New", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.start_new_game(), width=5).grid(row=2, column=9,sticky="NSWE")
+        Button(self, text="Guess", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.guess_phrase(), width=10).grid(row=3, column=9,sticky="NSWE")
+        Button(self, text="End Game", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: game_over_screen(), width=10).grid(row=4, column=9, sticky="NSWE")
+        Button(self, text="New", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.start_new_game(), width=10).grid(row=2, column=9,sticky="NSWE")
 
     def guess(self,letter):
         global game_data
@@ -151,5 +152,5 @@ def game_over_screen():
     p = scores[game_data.game_mode]
     Label(top, text="Game Over", font=("Georgia", 20, "bold"), fg = "skyblue4",).pack(pady=5)
     Label(top, text=f"Points Earned: {p}", font=("Georgia", 14, "bold"), fg = "black", pady=20).pack(pady=5)
-    Button(top, text="New_Game", command=lambda: screens.screen_data["Game_Screen"].new_game(), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white").pack(pady=5)
-    Button(top, text="Back", command=lambda: screens.screen_data["Game_Screen"].end_game(), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white").pack(pady=5)
+    Button(top, text="New Game", command=lambda: [screens.screen_data["Game_Screen"].new_game(), top.destroy()], font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white").pack(pady=5)
+    Button(top, text="Back to Main Menu", command=lambda: [screens.screen_data["Game_Screen"].end_game(), top.destroy()], font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white").pack(pady=5)
