@@ -38,15 +38,17 @@ class Game_Screen(tk.Frame):
         self.lblWord.set(self.hangman.string_completed())
 
         tk.Button(self, text="Menu", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.back_to_user(), width=10).grid(row = 0, column = 0, columnspan=2)
-        self.imgLabel.grid(row=1,column=0,columnspan=3, padx=10, pady=40)
-        Label(self, textvariable=self.lblWord, font=("Georgia", 14), bg = "lightcyan3", fg = "black").grid(row=1,column=3,columnspan=6, padx=10)
+
+        self.imgLabel.grid(row=1, column=0, columnspan=3, padx=10, pady=40)
+
+        Label(self, textvariable=self.lblWord, font=("Georgia", 14), bg = "lightcyan3", fg = "black", wraplength=450).grid(row=1, column=3, rowspan=3, columnspan=7)
         n=0
         for c in ascii_uppercase:
-            Button(self, text=c, font=("Georgia", 10, "bold"), bg = "white", fg = "black", command=lambda c=c: self.guess(c), width=5).grid(row=2+n//9, column=n%9, sticky = 'WE', padx=2, pady=2)
+            Button(self, text=c, font=("Georgia", 10, "bold"), bg = "white", fg = "black", command=lambda c=c: self.guess(c), width=5).grid(row=5+n//9, column=n%9, sticky = 'WE', padx=2, pady=2)
             n+=1
-        Button(self, text="Guess", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.guess_phrase(), width=10).grid(row=3, column=9,sticky="NSWE")
-        Button(self, text="End Game", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: game_over_screen(), width=10).grid(row=4, column=9, sticky="NSWE")
-        Button(self, text="New", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.start_new_game(), width=10).grid(row=2, column=9,sticky="NSWE")
+        Button(self, text="Guess", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.guess_phrase(), width=10).grid(row=5, column=9,sticky="NSWE")
+        Button(self, text="End Game", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: game_over_screen(), width=10).grid(row=7, column=9, sticky="NSWE")
+        Button(self, text="New", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.start_new_game(), width=10).grid(row=6, column=9,sticky="NSWE")
 
     def guess(self,letter):
         global game_data
