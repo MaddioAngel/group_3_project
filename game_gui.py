@@ -70,7 +70,6 @@ class Game_Screen(tk.Frame):
             if(self.hangman.tries == 0):
                 messagebox.showwarning("Hangman", "Game Over")
                 self.lblWord.set(self.hangman.sentence)
-                game_over_screen()
                 user = get_user_data(user_data.user_name)
                 scores = json.loads(user[1])
                 p = scores[game_data.game_mode]
@@ -78,6 +77,7 @@ class Game_Screen(tk.Frame):
                     add_high_score(game_data.game_mode, user_data.user_name, p)
                     if check_top_scores(game_data.game_mode, user_data.user_name, p):   
                         messagebox.showwarning("Hangman", "New High Score!")
+                game_over_screen()
                 update__user_data_score(user_data.user_name, game_data.game_mode, 0)
 
     def guess_phrase(self):
