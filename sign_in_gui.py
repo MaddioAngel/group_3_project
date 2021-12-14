@@ -32,8 +32,8 @@ class Login(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.config(bg="lightcyan3")
-        button = tk.Button(self, text="Main Menu", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10,
-                           command=lambda: controller.show_frame("StartPage")).place(x=350, y=300)
+        tk.Button(self, text="Main Menu", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10,
+                           command=lambda: controller.show_frame("StartPage")).place(x=440, y=300)
 
         tk.Label(self,text="Enter details below to login", font=("arial black",12), bg = "lightcyan3", fg ="black", pady=20).pack()
 
@@ -56,7 +56,7 @@ class Login(tk.Frame):
         password_login_entry = tk.Entry(self,textvariable=password_verify, show= '*')
         password_login_entry.pack(side="top", pady=2)
 
-        tk.Button(self,text="Login", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10, height=1, command = self.login_verify).place(x=150, y=300)
+        tk.Button(self,text="Login", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10, height=1, command = self.login_verify).place(x=305, y=300)
         self.text = tk.StringVar()
 
   

@@ -22,8 +22,8 @@ class UserScreen(tk.Frame):
         self.text2.set("")
 
         #Log Out Button
-        button = tk.Button(self, text="Log Out", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10,         
-                        command=lambda: self.return_to_sign_in()).place(x=400, y=300)
+        tk.Button(self, text="Log Out", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10,         
+                        command=lambda: self.return_to_sign_in()).place(x=440, y=300)
 
 
         #Username and Money
@@ -31,11 +31,11 @@ class UserScreen(tk.Frame):
         self.label3 = tk.Label(self, textvariable=self.text2, font=("arial black",10), bg = "lightcyan3", fg ="black").pack()
         self.label4 = tk.Label(self, bg = "lightcyan3", pady=10).pack()  
 
-        self.games = tk.Frame(self, bg = "skyblue4", pady=10)
+        self.games = tk.Frame(self, bg = "lightcyan3", pady=10)
         self.games.pack()
 
         #High Score Buttons
-        highscorebutton2 = tk.Button(self, text="High Scores",  font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10, command=lambda: controller.show_frame("Hign_Score_Screen")).place(x=100, y=300)
+        tk.Button(self, text="High Scores",  font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10, command=lambda: self.got_to_high_score()).place(x=305, y=300)
 
         
     def get_user_info(self):
@@ -45,7 +45,7 @@ class UserScreen(tk.Frame):
         self.buttons = []
 
         for game_mode in unlocked_list:
-            self.buttons.append(tk.Button(self.games,text=game_mode, width=18, height=1, font=("Elephant", 10), bg = "white", fg = "black", command=lambda mode=game_mode: self.change_to_game_screen(mode)))
+            self.buttons.append(tk.Button(self.games,text=game_mode, width=18, height=1, font=("Elephant", 10), bg = "white", fg = "white", command=lambda mode=game_mode: self.change_to_game_screen(mode)))
         for button in self.buttons:
             button.pack()
         data_user = f"User: {self.name}"
@@ -64,6 +64,11 @@ class UserScreen(tk.Frame):
     def return_to_sign_in(self):
         self.controller.show_frame("StartPage")
         self.clear()
+
+    def got_to_high_score(self):
+        self.controller.show_frame("Hign_Score_Screen")
+        self.clear()
+
 
     def clear(self):
         for button in self.buttons:
