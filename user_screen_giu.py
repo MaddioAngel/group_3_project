@@ -45,7 +45,7 @@ class UserScreen(tk.Frame):
         self.buttons = []
 
         for game_mode in unlocked_list:
-            self.buttons.append(tk.Button(self.games,text=game_mode, width=18, height=1, font=("Elephant", 10), bg = "white", fg = "white", command=lambda mode=game_mode: self.change_to_game_screen(mode)))
+            self.buttons.append(tk.Button(self.games,text=game_mode, width=18, height=1, font=("Elephant", 10), bg = "white", fg = "black", command=lambda mode=game_mode: self.change_to_game_screen(mode)))
         for button in self.buttons:
             button.pack()
         data_user = f"User: {self.name}"
