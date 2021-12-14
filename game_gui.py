@@ -104,10 +104,6 @@ class Game_Screen(tk.Frame):
         messagebox.showwarning("Hangman", "New High Score!")
         screens.screen_data["Game_Screen"].new_game()
 
-    def end_game(self):
-        update__user_data_score(user_data.user_name, game_data.game_mode, 0)
-        self.back_to_user()
-
 class Phrase_Screen(tk.Frame):
     def __init__(self, parent, controller):
         self.hangman = None
@@ -173,4 +169,4 @@ def game_over_screen():
     Label(top, text="Game Over", font=("Georgia", 20, "bold"), fg = "skyblue4",).pack(pady=5)
     Label(top, text=f"Points Earned: {p}", font=("Georgia", 14, "bold"), fg = "black", pady=20).pack(pady=5)
     Button(top, text="New Game", command=lambda: [screens.screen_data["Game_Screen"].new_game(), top.destroy()], font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white").pack(pady=5)
-    Button(top, text="Back to Main Menu", command=lambda: [screens.screen_data["Game_Screen"].end_game(), top.destroy()], font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white").pack(pady=5)
+    Button(top, text="Back to Main Menu", command=lambda: [screens.screen_data["Game_Screen"].back_to_user(), top.destroy()], font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white").pack(pady=5)
