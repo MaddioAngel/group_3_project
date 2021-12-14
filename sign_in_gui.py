@@ -56,7 +56,7 @@ class Login(tk.Frame):
         username_login_entry.delete(0, tk.END)
         password_login_entry.delete(0, tk.END)
         if username1 == "" or password1 == "":
-            tk.Label(self, text="Please enter username and password").pack()
+            self.user_not_found()
             return
         if not check_if_user_exists(username1):
             if check_user_password(username1, password1):
@@ -73,7 +73,7 @@ class Login(tk.Frame):
     def password_not_recognised(self):
         global password_not_recog_screen
         password_not_recog_screen = tk.Toplevel(self.controller)
-        password_not_recog_screen.title("Success")
+        password_not_recog_screen.title("Failure")
         password_not_recog_screen.geometry("150x100")
         tk.Label(password_not_recog_screen, text="Invalid Password ").pack()
         tk.Button(password_not_recog_screen, text="OK", command=self.delete_password_not_recognised).pack()
@@ -81,7 +81,7 @@ class Login(tk.Frame):
     def user_not_found(self):
         global user_not_found_screen
         user_not_found_screen = tk.Toplevel(self.controller)
-        user_not_found_screen.title("Success")
+        user_not_found_screen.title("Failure")
         user_not_found_screen.geometry("150x100")
         tk.Label(user_not_found_screen, text="User Not Found").pack()
         tk.Button(user_not_found_screen, text="OK", command=self.delete_user_not_found_screen).pack()
