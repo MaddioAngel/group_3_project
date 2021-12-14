@@ -36,10 +36,6 @@ def create_word_table():
         (ID INTEGER PRIMARY KEY,
         WORD           TEXT    NOT NULL,
         SCORE          INT      ) ;''')
-        con.execute('''CREATE TABLE WORD_OF_THE_DAY
-        (ID INTEGER PRIMARY KEY,
-        WORD           TEXT    NOT NULL,
-        SCORE          INT      ) ;''')
         con.execute('''CREATE TABLE MOVIE_QUOTES
         (ID INTEGER PRIMARY KEY,
         WORD           TEXT    NOT NULL,
