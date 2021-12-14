@@ -69,11 +69,19 @@ class Hangman:
 
     def string_completed(self) -> str:
         string = ''
-        special_char = ".\"!@#$%^&*()-+?=,<>/;:[]{\}|\'"
+        special_char = "\"!@#$%^&*()-+?=,<>/;:[]{\}|\'"
         done = False
+        new_line = 0
         for i in range(len(self.sentence)):
             if self.sentence[i] == " ":
                 string += "  "
+                new_line += 1
+                if new_line == 5:
+                    string += "\n"
+                    new_line = 0
+            elif self.sentence[i] in ".":
+                string += " .\n"
+                new_line = 0
             elif self.sentence[i] in self.letters_guessed:
                 string += self.sentence[i] + " "
             elif self.sentence[i] in special_char:

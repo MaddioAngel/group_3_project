@@ -30,10 +30,10 @@ class Game_Screen(tk.Frame):
         self.hangman = Hangman(word[0])
         print(word)
         self.imgLabel.config(image=self.photos[self.hangman.tries], bg = "lightcyan3") 
-        self.imgLabel.place_slaves()
         self.lblWord.set(self.hangman.string_completed())
         tk.Button(self, text="Menu", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.back_to_user(), width=10).grid(row = 0, column = 0, columnspan=2)
         self.imgLabel.grid(row=1, column=0, columnspan=3, padx=10, pady=40)
+
         Label(self, textvariable=self.lblWord, font=("Georgia", 14), bg = "lightcyan3", fg = "black", wraplength=450).grid(row=1, column=3, rowspan=3, columnspan=7)
         n=0
         for c in ascii_uppercase:
@@ -97,7 +97,6 @@ class Game_Screen(tk.Frame):
             if check_top_scores(game_data.game_mode, user_data.user_name, p):   
                 messagebox.showwarning("Hangman", "New High Score!")
         update__user_data_score(user_data.user_name, game_data.game_mode, 0)
-        messagebox.showwarning("Hangman", "New High Score!")
         screens.screen_data["Game_Screen"].new_game()
 
 class Phrase_Screen(tk.Frame):
