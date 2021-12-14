@@ -4,7 +4,15 @@ from database import *
 import user_data
 import screens
 
+'''
+Shows the splash screen to the start of the app
+'''
+
 class StartPage(tk.Frame):
+    '''
+    has buttons to go to the login screen and the register screen
+    has a button to go to the high score screen
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -20,12 +28,20 @@ class StartPage(tk.Frame):
         button1.pack(side="top", pady=5)
         button2.pack(side="top", pady=5)
         button3.pack(side="top", pady=5)
+
     def got_to_high_score(self):
+        '''
+        switch to the high score screen
+        '''
         global screens
         screens.screen_data["Hign_Score_Screen"].update_data()
         self.controller.show_frame("Hign_Score_Screen")
 
 class Login(tk.Frame):
+    '''
+    has a Entry bar to enter the username and a Entry bar to enter the password
+    has a button to login
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -50,6 +66,13 @@ class Login(tk.Frame):
         self.text = tk.StringVar()
 
     def login_verify(self):
+        '''
+        varifies the username and password entered
+        if the user exsists and the password is correct then the user is logged in
+        if the user exsists and the password is incorrect then the user is notified
+        if the user does not exsist then the user is notified
+        if nothing is entered then the user is notified
+        '''
         global user_data
         username1 = username_verify.get()
         password1 = password_verify.get()
@@ -71,6 +94,9 @@ class Login(tk.Frame):
         self.user_not_found()
 
     def password_not_recognised(self):
+        '''
+        pop up to tell the user that the password is incorrect
+        '''
         global password_not_recog_screen
         password_not_recog_screen = tk.Toplevel(self.controller)
         password_not_recog_screen.title("Failure")
@@ -79,6 +105,9 @@ class Login(tk.Frame):
         tk.Button(password_not_recog_screen, text="OK", command=self.delete_password_not_recognised).pack()
 
     def user_not_found(self):
+        '''
+        pop up to tell the user that the username does not exsist
+        '''
         global user_not_found_screen
         user_not_found_screen = tk.Toplevel(self.controller)
         user_not_found_screen.title("Failure")
@@ -87,12 +116,22 @@ class Login(tk.Frame):
         tk.Button(user_not_found_screen, text="OK", command=self.delete_user_not_found_screen).pack()
     
     def delete_password_not_recognised(self):
+        '''
+        deletes the pop up to tell the user that the password is incorrect
+        '''
         password_not_recog_screen.destroy()
     
     def delete_user_not_found_screen(self):
+        '''
+        deletes the pop up to tell the user that the username does not exsist
+        '''
         user_not_found_screen.destroy()
     
 class Register(tk.Frame):
+    '''
+    has a Entry bar to enter the username and a Entry bar to enter the password
+    has a button to register
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -120,6 +159,10 @@ class Register(tk.Frame):
         self.confirmation = tk.Label(self,textvariable=self.text, font=("arial black",10), bg = "lightcyan3", fg ="skyblue4").pack()
 
     def register_user(self):
+        '''
+        registers the user if the username and password are valid
+        if the username and password are invalid say both are empty or the username is already taken then the user is notified
+        '''
         username_info = username.get()
         password_info = password.get()
 

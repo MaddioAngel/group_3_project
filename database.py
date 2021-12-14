@@ -3,6 +3,33 @@ from os.path import exists
 import os
 import json
 
+
+'''
+Database.py houses all the functions that are used to interact with the database
+connect_to_database - connects to the database
+create_user_table - creates the user table
+create_word_table - creates the word table
+create_high_score_table - creates the high score table
+add_user_data - adds a user to the database
+add_word_data - adds a word to the database
+adding_words_from_files - adds words from files to the database from the words folder
+add_high_score - adds a high score to the database
+print_user_data - prints the user data
+print_word_data - prints the word data
+check_if_user_exists - checks if a user exists in the database
+check_user_password - checks if the password is correct for a user
+check_if_word_exists - checks if a word exists in the database
+check_if_highscore_exists - checks if a high score exists in the database
+check_top_scores - checks the top scores for a game mode
+get_user_data - gets the user data from the database based on the user name
+get_word_data - gets the word data from the database
+get_random_word_data - gets a random word from the database based on the game mode
+get_high_score_data - gets the high score data from the database based on the game mode
+update__user_data_score - updates the user data score using the user name, game mode and score
+delete_user_data - deletes the user data from the database using the user name
+clear_high_score_data - clears the high score data from the database
+'''
+
 def connect_to_database():
     file_exists = exists("database.db")
     if not file_exists:

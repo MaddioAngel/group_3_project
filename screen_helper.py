@@ -6,8 +6,10 @@ from game_gui import Game_Screen, Phrase_Screen
 from high_score_gui import Hign_Score_Screen
 import screens
 
-
 class screen_helper(tk.Tk):
+    '''
+    keeps track of all the screens it can access them all
+    '''
     def __init__(self, *args, **kwargs):
         global screens
         tk.Tk.__init__(self, *args, **kwargs)
@@ -17,8 +19,6 @@ class screen_helper(tk.Tk):
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-
-
         self.frames = {}
         for F in (StartPage, Login, Register, UserScreen, Game_Screen, Phrase_Screen, Hign_Score_Screen):
             page_name = F.__name__
@@ -29,11 +29,16 @@ class screen_helper(tk.Tk):
         self.show_frame("StartPage")
 
     def show_frame(self, page_name):
-        '''Show a frame for the given page name'''
+        '''
+        switchs the screen to the one specified
+        '''
         frame = self.frames[page_name]
         frame.tkraise()
 
     def get_screen_object(self, frame_name):
+        '''
+        returns the screen object
+        '''
         frame = self.frames[frame_name]
         return frame
 

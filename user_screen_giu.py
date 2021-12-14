@@ -4,7 +4,14 @@ import user_data
 import game_data
 import screens
 
+'''
+user screen giu shows different gamemodes the uaer can choose from and the high score button
+'''
 class UserScreen(tk.Frame):
+    '''
+    this is the main function that runs the user screen
+    has the high score button and log out 
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.name = ""
@@ -25,6 +32,9 @@ class UserScreen(tk.Frame):
         tk.Button(self, text="High Scores",  font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width=10, command=lambda: self.got_to_high_score()).place(x=305, y=300)
 
     def get_user_info(self):
+        '''
+        updates the user info when the user logs in
+        '''
         global user_data
         self.name, self.points, self.unlocked = get_user_data(user_data.user_name)
         unlocked_list = self.unlocked.split(" ")
@@ -39,6 +49,9 @@ class UserScreen(tk.Frame):
         self.text2.set(data_points)
 
     def change_to_game_screen(self, mode):
+        '''
+        moves to the game screen
+        '''
         global game_data
         global screens
         game_data.game_mode = mode
@@ -47,16 +60,24 @@ class UserScreen(tk.Frame):
         self.clear()
 
     def return_to_sign_in(self):
+        '''
+        return to the start page
+        '''
         self.controller.show_frame("StartPage")
         self.clear()
 
     def got_to_high_score(self):
+        '''
+        '''
         global screens
         screens.screen_data["Hign_Score_Screen"].update_data()
         self.controller.show_frame("Hign_Score_Screen")
         self.clear()
 
     def clear(self):
+        '''
+        clears the user data so if a other user logs in it will update
+        '''
         for button in self.buttons:
             button.destroy()
         self.buttons = []

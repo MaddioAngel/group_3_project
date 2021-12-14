@@ -10,6 +10,11 @@ from database import *
 import screens
 
 class Game_Screen(tk.Frame):
+    '''
+    initalize the game screen
+    creates empty hangman object and empty word label to be filled when a new game is started
+    holds the images for the hangman
+    '''
     def __init__(self, parent, controller):
         self.hangman = None
         tk.Frame.__init__(self, parent)
@@ -25,6 +30,10 @@ class Game_Screen(tk.Frame):
         ,PhotoImage(file="hangman_images/hang1.png"),PhotoImage(file="hangman_images/hang0.png")]
 
     def new_game(self):
+        '''
+        creates a new hangman object and fills the word label with the empty string
+        creates the buttons for the alphabet, phrase guess, new game and back to user button
+        '''
         global game_data
         word = get_random_word_data(game_data.game_mode)
         self.hangman = Hangman(word[0])
@@ -44,6 +53,15 @@ class Game_Screen(tk.Frame):
         Button(self, text="New", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.start_new_game(), width=10).grid(row=6, column=9,sticky="NSWE")
 
     def guess(self,letter):
+        '''
+        has user data and game data objects to keep track of the players score
+        The letter is passed in as a parameter from the buttons on the game screen
+        if the letter is in the word, the word label is updated with the new word
+        if the letter is not in the word, the hangman image is updated and the hangman tries is incremented
+        if the hangman tries is equal to the number of tries allowed, the game is over and the game over screen is called and points are calculated
+        if the word is completed, the game is over and the game over screen is called
+        if the letter is already guessed, the user is getten an error message
+        '''
         global game_data
         global user_data
         if(self.hangman.tries > 0):
@@ -77,16 +95,27 @@ class Game_Screen(tk.Frame):
                 update__user_data_score(user_data.user_name, game_data.game_mode, 0)
 
     def guess_phrase(self):
+        '''
+        sets up information for the phrase guess screen
+        '''
         self.controller.show_frame("Phrase_Screen")
         self.controller.get_screen_object("Phrase_Screen").set_hangman(self.hangman)
-        self.controller.get_screen_object("Phrase_Screen").set_img(self.imgLabel)
         self.controller.get_screen_object("Phrase_Screen").set_up_screen()
          
     def back_to_user(self):
+        '''
+        sets up information for the user screen
+        takes the user back to the user screen
+        '''
         self.controller.get_screen_object("UserScreen").get_user_info()
         self.controller.show_frame("UserScreen")
 
     def start_new_game(self):
+        '''
+        can only be run from new game button on game screen
+        calculates the points for the game mode and updates the user data
+        starts a new game
+        '''
         global game_data
         global user_data
         user = get_user_data(user_data.user_name)
@@ -100,15 +129,13 @@ class Game_Screen(tk.Frame):
         screens.screen_data["Game_Screen"].new_game()
 
 class Phrase_Screen(tk.Frame):
+    '''
+    initalize the phrase screen
+    creates empty hangman object and empty word label to be filled when a new game is started
+    '''
     def __init__(self, parent, controller):
         self.hangman = None
         self.imgLabel = None
-        self.photos = [PhotoImage(file="hangman_images/hang11.png"),PhotoImage(file="hangman_images/hang10.png")
-        ,PhotoImage(file="hangman_images/hang9.png"),PhotoImage(file="hangman_images/hang8.png")
-        ,PhotoImage(file="hangman_images/hang7.png"),PhotoImage(file="hangman_images/hang6.png")
-        ,PhotoImage(file="hangman_images/hang5.png"),PhotoImage(file="hangman_images/hang4.png")
-        ,PhotoImage(file="hangman_images/hang3.png"),PhotoImage(file="hangman_images/hang2.png")
-        ,PhotoImage(file="hangman_images/hang1.png"),PhotoImage(file="hangman_images/hang0.png")]
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.config(bg="lightcyan3")        
@@ -119,19 +146,32 @@ class Phrase_Screen(tk.Frame):
         self.guessing_bar.pack(pady = 10)
         tk.Button(self, text='Guess', command=lambda:self.guess(), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width = 10, height=1).pack(pady=5)
         tk.Button(self, text="Back", command=lambda: self.controller.show_frame("Game_Screen"), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width = 10).pack(pady=5)
+    
     def set_hangman(self, hangman: Hangman):
+        '''
+        gets the hangman object from the game screen
+        '''
         self.hangman = hangman
-    def set_img(self, img):
-        self.imgLabel = img
+
+
+        '''
+        gets the curten word from the hangman object
+        '''
     def set_up_screen(self):
         self.lblWord.set(self.hangman.string_completed())
+    
     def guess(self):
+        '''
+        has user data and game data objects to keep track of the players score
+        check to see if the word guessed matches the word in the hangman object
+        if the word guessed is correct, the game is over and the game over screen is called
+        if the word guessed is incorrect, nothing happens
+        '''
         if(self.hangman.guess_phrase(self.gue.get().upper()) is False and self.hangman.tries != 0):
             self.hangman.tries -= 1
             messagebox.showwarning("Hangman", "Not the Answer")
             self.guessing_bar.select_clear()
         else:
-            self.imgLabel.config(image=self.photos[self.hangman.tries])
             if(self.hangman.guessed):
                 user = get_user_data(user_data.user_name)
                 scores = json.loads(user[1])
@@ -151,6 +191,11 @@ class Phrase_Screen(tk.Frame):
                 game_over_screen()
 
 def game_over_screen():
+    '''
+    gets the points from the user n the database
+    displays the points on the game over screen
+    lets the user play again or go back to the user screen
+    '''
     global user_data
     global game_data
     top= Toplevel(screens.screen_data["Game_Screen"])

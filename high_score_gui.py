@@ -2,7 +2,16 @@ import tkinter as tk
 from tkinter import *
 from database import *
 
+'''
+grabs the scores from the database and displays the top 10 in the frame
+'''
+
 class Hign_Score_Screen(tk.Frame):
+    '''
+    holds the different types of game modes
+    load empty labels for the scores
+    haves a back button and a next button to change which game mode is displayed
+    '''
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -40,6 +49,10 @@ class Hign_Score_Screen(tk.Frame):
         self.update_data()
 
     def update_data(self):
+        '''
+        when a user switches between game modes, this function is called to update the scores
+        or when a player creates a new high score
+        '''
         mode = self.games[self.count]
         scores = get_high_score_data(mode)
         score_list = []
@@ -59,6 +72,9 @@ class Hign_Score_Screen(tk.Frame):
             self.label_list[s].set(score_list[s])
     
     def next(self):
+        '''
+        goes foward to the next game mode
+        '''
         if self.count == len(self.games)-1:
             return
         else:
@@ -67,6 +83,9 @@ class Hign_Score_Screen(tk.Frame):
         self.update_data()
 
     def back(self):
+        '''
+        goes back to the previous game mode
+        '''
         if self.count == 0:
             return
         else:
@@ -75,6 +94,9 @@ class Hign_Score_Screen(tk.Frame):
         self.update_data()
 
     def back_to_sign_in(self):
+        '''
+        Goes back to the sign in screen
+        '''
         self.controller.show_frame("StartPage")
 
 

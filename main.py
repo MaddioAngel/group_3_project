@@ -15,4 +15,3 @@ if __name__ == "__main__":
     app.resizable(False, False)
     app.title("Hangman")
     app.mainloop()
- 

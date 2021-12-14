@@ -1,6 +1,20 @@
 from tkinter import *
 
+
+'''
+the logic of the hangman game
+function:
+updated_completed_part - updates the completed part of the the word (addes the '_' to the shown word)
+
+'''
 class Hangman:
+    '''
+    guessed - keeps track of whether the user has guessed the word
+    sentence - the actural word/phrase
+    compled_part - keeps track of the completed part of the word
+    tries - keeps track of the number of tries the user has left
+    letters_guessed
+    '''
     def __init__(self, sentence):
         self.guessed = False
         self.compled_part = list()
@@ -10,6 +24,15 @@ class Hangman:
         self.guessed_words = list()
     
     def updated_completed_part(self, letter): 
+        '''
+        splits the completed_part of the word into a list
+        splits the actual word into a list
+        
+        makes sure that the letter in completed_part is the same as the letter in the actual word
+
+        check where the letter is in the actual word
+        then adds it to the completed_part
+        '''
         completed_part = list(self.compled_part)
         sentence = list(self.sentence)
         length = len(sentence)
@@ -28,10 +51,14 @@ class Hangman:
                     completed_part[i] = letter
         self.compled_part = "".join(completed_part)
 
-    def over(self) -> bool:
-        return self.guessed or self.tries == 0
-
     def guess_letter(self, guess):
+        '''
+        checks to see if letter is in the word
+        if it is, it adds it to the letters_guessed list
+        if it is not, it subtracts a try
+        if already guessed, return 1 to let game screen know
+
+        '''
         if len(guess) == 1 and guess.isalpha():
             if guess in self.letters_guessed:
                 print("you already tried", guess, "!")
@@ -52,6 +79,12 @@ class Hangman:
             return 2 
     
     def guess_phrase(self, guess):
+        '''
+        checks to see if phrase is the word
+        if it is, it adds it to the letters_guessed list
+        if it is not, it subtracts a try
+        if already guessed, return 1 to let game screen know
+        '''
         if len(guess) == len(self.sentence):
             if guess in self.guessed_words:
                 print("You already tried ", guess, "!")
@@ -68,6 +101,10 @@ class Hangman:
             return False
 
     def string_completed(self) -> str:
+        '''
+        updated the completed part of the word
+        and returns it as a string so the game screen can display it
+        '''
         string = ''
         special_char = "\"!@#$%^&*()-+?=,<>/;:[]{\}|\'"
         done = False
