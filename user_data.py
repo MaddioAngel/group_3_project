@@ -1,4 +1,3 @@
-
 def user_data():
-    global user_dict
-    user_dict = {}
+    global user_name
+    user_name = ""
