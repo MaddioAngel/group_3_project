@@ -1,7 +1,7 @@
 from screen_helper import screen_helper
 from database import *
-# import ctypes
-# ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
+import ctypes
+ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 if __name__ == "__main__":
     create_user_table()
