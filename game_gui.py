@@ -36,11 +36,8 @@ class Game_Screen(tk.Frame):
         self.imgLabel.config(image=self.photos[self.hangman.tries], bg = "lightcyan3") 
         self.imgLabel.place_slaves()
         self.lblWord.set(self.hangman.string_completed())
-
         tk.Button(self, text="Menu", font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", command=lambda: self.back_to_user(), width=10).grid(row = 0, column = 0, columnspan=2)
-
         self.imgLabel.grid(row=1, column=0, columnspan=3, padx=10, pady=40)
-
         Label(self, textvariable=self.lblWord, font=("Georgia", 14), bg = "lightcyan3", fg = "black", wraplength=450).grid(row=1, column=3, rowspan=3, columnspan=7)
         n=0
         for c in ascii_uppercase:
@@ -82,7 +79,6 @@ class Game_Screen(tk.Frame):
                     if check_top_scores(game_data.game_mode, user_data.user_name, p):   
                         messagebox.showwarning("Hangman", "New High Score!")
                 update__user_data_score(user_data.user_name, game_data.game_mode, 0)
-
 
     def guess_phrase(self):
         self.controller.show_frame("Phrase_Screen")
@@ -127,29 +123,43 @@ class Phrase_Screen(tk.Frame):
         self.config(bg="lightcyan3")        
         self.lblWord=StringVar()
         self.gue=StringVar()
+        tk.Label(self, textvariable=self.lblWord, font=("Georgia", 14, "bold"), bg = "lightcyan3", fg = "black").pack(pady = 50)
+        self.guessing_bar = tk.Entry(self, textvariable=self.gue)
+        self.guessing_bar.pack(pady = 10)
+        tk.Button(self, text='Guess', command=lambda:self.guess(), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width = 10, height=1).pack(pady=5)
+        tk.Button(self, text="Back", command=lambda: self.controller.show_frame("Game_Screen"), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width = 10).pack(pady=5)
+
     def set_hangman(self, hangman: Hangman):
         self.hangman = hangman
     def set_img(self, img):
         self.imgLabel = img
     def set_up_screen(self):
         self.lblWord.set(self.hangman.string_completed())
-        Label(self, textvariable=self.lblWord, font=("Georgia", 14, "bold"), bg = "lightcyan3", fg = "black").pack(pady = 50)
-        Entry(self, textvariable=self.gue).pack(pady=5)
-        Button(self, text='Guess', command=lambda:self.guess(), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width = 10, height=1).pack(pady=5)
-        tk.Button(self, text="Back", command=lambda: self.controller.show_frame("Game_Screen"), font=("Georgia", 10, "bold"), bg = "skyblue4", fg = "white", width = 10).pack(pady=5)
-
     def guess(self):
-        if(self.hangman.guess_phrase(self.gue.get().upper()) is False):
-            messagebox.showwarning("Hangman", "Invalid Guess")
+        if(self.hangman.guess_phrase(self.gue.get().upper()) is False and self.hangman.tries != 0):
+            self.hangman.tries -= 1
+            messagebox.showwarning("Hangman", "Not the Answer")
+            self.guessing_bar.select_clear()
         else:
             self.imgLabel.config(image=self.photos[self.hangman.tries])
             if(self.hangman.guessed):
+                user = get_user_data(user_data.user_name)
+                scores = json.loads(user[1])
+                p = scores[game_data.game_mode]
+                p += 10
+                update__user_data_score(user_data.user_name, game_data.game_mode, p)
                 messagebox.showinfo("Hangman", "You win!")
                 self.controller.get_screen_object("Game_Screen").lblWord.set(self.hangman.sentence)
+                self.controller.show_frame("Game_Screen")
+                self.guessing_bar.select_clear()
+                game_over_screen()
+                
             if(self.hangman.tries == 0):
                 messagebox.showwarning("Hangman", "Game Over")
                 self.controller.get_screen_object("Game_Screen").lblWord.set(self.hangman.sentence)
                 self.controller.show_frame("Game_Screen")
+                self.guessing_bar.select_clear()
+                game_over_screen()
 
 def game_over_screen():
     global user_data
